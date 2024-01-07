@@ -31,7 +31,6 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 -- Toggleterm navigate
 function _G.set_terminal_keymaps()
   local opts = {buffer = 0}
-  vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
   vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
   vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
   vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
@@ -46,4 +45,7 @@ vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 -- Standard operations
 vim.keymap.set('n', '<leader>w', "<cmd>w<cr>", { desc = "Save" })
 vim.keymap.set('n', '<leader>q', "<cmd>confirm q<cr>", { desc = "Quit" })
+vim.keymap.set('v', '<Tab>', ">gv", { desc = "Indent line" })
+vim.keymap.set('v', '<S-Tab>', "<gv", { desc = "Unindent line" })
+
 
