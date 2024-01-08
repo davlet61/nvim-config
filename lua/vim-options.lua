@@ -5,7 +5,7 @@ vim.cmd("set shiftwidth=2")
 
 vim.g.mapleader = " "
 vim.opt.relativenumber = true
-
+vim.o.cmdheight = 0
 
 require("keymaps")
 
