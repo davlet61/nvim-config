@@ -42,9 +42,6 @@ end
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
 vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
 
-local toggle_new_term = function()
-	utils.toggle_term_cmd("btm")
-end
 
 -- Standard operations
 vim.keymap.set("n", "<leader>w", "<cmd>w<cr>", { desc = "Save" })

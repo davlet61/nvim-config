@@ -42,6 +42,9 @@ return {
 				"<cmd>lua _lazygit_toggle()<CR>",
 				{ noremap = true, silent = true }
 			)
+
+			vim.keymap.set( "n", "<leader>tf", "<cmd>ToggleTerm direction=float<cr>", {  desc = "ToggleTerm float", noremap = true, silent = true })
+
 		end,
 	},
 }
