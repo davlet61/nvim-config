@@ -27,7 +27,38 @@ return {
 					:find()
 			end
 
+			vim.keymap.set("n", "<C-e>", function()
+				toggle_telescope(harpoon:list())
+			end, { desc = "Open harpoon window" })
+
 			-- Keymaps
+			vim.keymap.set("n", "<leader>a", function()
+				harpoon:list():append()
+			end)
+			vim.keymap.set("n", "<C-e>", function()
+				harpoon.ui:toggle_quick_menu(harpoon:list())
+			end)
+
+			vim.keymap.set("n", "<C-S-1>", function()
+				harpoon:list():select(1)
+			end)
+			vim.keymap.set("n", "<<C-S-2>", function()
+				harpoon:list():select(2)
+			end)
+			vim.keymap.set("n", "<C-S-3>", function()
+				harpoon:list():select(3)
+			end)
+			vim.keymap.set("n", "<C-S-4>", function()
+				harpoon:list():select(4)
+			end)
+
+			-- Toggle previous & next buffers stored within Harpoon list
+			vim.keymap.set("n", "<C-S-h>", function()
+				harpoon:list():prev()
+			end)
+			vim.keymap.set("n", "<C-S-l>", function()
+				harpoon:list():next()
+			end)
 
 			-- Toggle previous & next buffers stored within Harpoon list
 			vim.keymap.set("n", "<C-S-P>", function()
