@@ -16,6 +16,8 @@ return {
 						end,
 					})
 				end
+
+				vim.keymap.set("n", "<leader>ld", vim.diagnostic.open_float, {})
 			end,
 			sources = {
 				null_ls.builtins.formatting.stylua,

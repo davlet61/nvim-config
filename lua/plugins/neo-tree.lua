@@ -1,17 +1,19 @@
-
 return {
   "nvim-neo-tree/neo-tree.nvim",
-	branch = "v3.x",
-	dependencies = {
-		"nvim-lua/plenary.nvim",
-		"nvim-tree/nvim-web-devicons",
-		"MunifTanjim/nui.nvim",
-	},
+  branch = "v3.x",
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    "nvim-tree/nvim-web-devicons",
+    "MunifTanjim/nui.nvim",
+  },
   config = function()
     require("neo-tree").setup({
       close_if_last_window = true,
       enable_diagnostics = true,
       filesystem = {
+        follow_current_file = { enabled = true },
+        hijack_netrw_behavior = "open_current",
+        use_libuv_file_watcher = true,
         filtered_items = {
           visible = true,
           hide_dotfiles = false,
@@ -32,7 +34,7 @@ return {
           { "current_filter" },
           { "name" },
           { "clipboard" },
-          { "diagnostics", errors_only = true },
+          { "diagnostics",   errors_only = true },
         },
         file = {
           { "indent" },
@@ -54,10 +56,48 @@ return {
         -- keys
         -- width = "100%", -- Uncomment this if you want to set a specific width
       },
+      commands = {
+        system_open = function(state)
+          vim.ui.open(state.tree:getNode():get_id())
+        end,
+        parent_or_close = function(state)
+          local node = state.tree:get_node()
+          if (node.type == "directory" or node:has_children()) and node:is_expanded() then
+            state.commands.toggle_node(state)
+          else
+            require("neo-tree.ui.renderer").focus_node(state, node:get_parent_id())
+          end
+        end,
+        child_or_open = function(state)
+          local node = state.tree:get_node()
+          if node.type == "directory" or node:has_children() then
+            if not node:is_expanded() then -- if unexpanded, expand
+              state.commands.toggle_node(state)
+            else                     -- if expanded and has children, seleect the next child
+              require("neo-tree.ui.renderer").focus_node(state, node:get_child_ids()[1])
+            end
+          else -- if not a directory just open it
+            state.commands.open(state)
+          end
+        end,
+        find_in_dir = function(state)
+          local node = state.tree:get_node()
+          local path = node:get_id()
+          require("telescope.builtin").find_files({
+            cwd = node.type == "directory" and path or vim.fn.fnamemodify(path, ":h"),
+          })
+        end,
+      },
     })
 
+    vim.keymap.set("n", "<leader>o", function()
+      if vim.bo.filetype == "neo-tree" then
+        vim.cmd.wincmd("p")
+      else
+        vim.cmd.Neotree("focus")
+      end
+    end, { desc = "Toggle Explorer Focus" })
     vim.keymap.set("n", "<leader>e", "<cmd>Neotree toggle<CR>", { desc = "Toggle Explorer" })
     vim.keymap.set("n", "<leader>bf", ":Neotree buffers reveal float<CR>", {})
   end,
 }
-
