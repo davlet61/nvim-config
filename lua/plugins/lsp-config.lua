@@ -12,7 +12,7 @@ return {
     config = function()
       require("mason-lspconfig").setup({
         auto_install = true,
-        ensure_installed = { "lua_ls", "graphql", "tsserver", "html", "gopls" },
+        ensure_installed = { "lua_ls", "graphql", "tsserver", "html", "gopls", "js-debug-adapter" },
       })
     end,
   },
