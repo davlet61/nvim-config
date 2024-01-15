@@ -11,22 +11,44 @@ return {
     local dap, dapui = require("dap"), require("dapui")
     dap.adapters["pwa-node"] = {
       type = "server",
-      host = "127.0.0.1",
-      port = 8123,
+      host = "localhost",
+      port = "${port}", --let both ports be the same for now...
       executable = {
+        -- command = "node",
+        -- args = { vim.fn.stdpath('data') .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js", "${port}" },
         command = "js-debug-adapter",
-      }
+        args = { "${port}" },
+      },
     }
 
-    for _, language in ipairs { "typescript", "javascript" } do
+    for _, language in ipairs({ "typescript", "javascript" }) do
       dap.configurations[language] = {
         {
-          type = "pwa-node",
-          request = "launch",
-          name = "Launch file",
-          program = "${file}",
+          type = 'pwa-node',
+          request = 'launch',
+          name = 'Launch Current File (pwa-node)',
+          cwd = "${workspaceFolder}", -- vim.fn.getcwd(),
+          args = { '${file}' },
+          sourceMaps = true,
+          protocol = 'inspector',
+        },
+        {
+          type = 'pwa-node',
+          request = 'launch',
+          name = 'Launch Current File (Typescript)',
           cwd = "${workspaceFolder}",
-          runtimeExecutable = "node",
+          runtimeArgs = { '--loader=ts-node/esm' },
+          program = "${file}",
+          runtimeExecutable = 'node',
+          -- args = { '${file}' },
+          sourceMaps = true,
+          protocol = 'inspector',
+          outFiles = { "${workspaceFolder}/**/**/*", "!**/node_modules/**" },
+          skipFiles = { '<node_internals>/**', 'node_modules/**' },
+          resolveSourceMapLocations = {
+            "${workspaceFolder}/**",
+            "!**/node_modules/**",
+          },
         },
       }
     end
@@ -37,6 +59,8 @@ return {
     dap.listeners.before.launch.dapui_config = function()
       dapui.open()
     end
+
+    -- !!! Fix auto-closing issue
     dap.listeners.before.event_terminated.dapui_config = function()
       dapui.close()
     end
