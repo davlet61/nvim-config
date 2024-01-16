@@ -22,6 +22,20 @@ autocmd("TextYankPost", {
   end,
 })
 
+local custom_highlights = require("highlights")()
+local highlight_group = augroup("CustomHighlights", { clear = true })
+
+autocmd("ColorScheme", {
+  group = highlight_group,
+  callback = function()
+    -- Apply each of your custom highlights
+    for group, spec in pairs(custom_highlights) do
+      vim.api.nvim_set_hl(0, group, spec)
+    end
+  end,
+})
+vim.cmd("doautocmd ColorScheme")
+
 -- autocmd("ColorScheme", {
 --   desc = "Load custom highlights from user configuration",
 --   group = augroup("astronvim_highlights", { clear = true }),
