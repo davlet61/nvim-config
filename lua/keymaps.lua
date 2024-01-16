@@ -1,67 +1,68 @@
 local utils = require("utils")
+local map = vim.keymap.set
 
 -- Navigate vim panes better
-vim.keymap.set("n", "<c-k>", ":wincmd k<CR>")
-vim.keymap.set("n", "<c-j>", ":wincmd j<CR>")
-vim.keymap.set("n", "<c-h>", ":wincmd h<CR>")
-vim.keymap.set("n", "<c-l>", ":wincmd l<CR>")
+map("n", "<c-k>", ":wincmd k<CR>")
+map("n", "<c-j>", ":wincmd j<CR>")
+map("n", "<c-h>", ":wincmd h<CR>")
+map("n", "<c-l>", ":wincmd l<CR>")
 
-vim.keymap.set("n", "<leader>h", ":nohlsearch<CR>")
+map("n", "<leader>h", ":nohlsearch<CR>")
 vim.wo.number = true
 
 -- System clipboard
-vim.keymap.set("n", "y", '"+y')
-vim.keymap.set("n", "yy", '"+yy')
-vim.keymap.set("n", "Y", '"+Y')
-vim.keymap.set("x", "y", '"+y')
-vim.keymap.set("x", "Y", '"+Y')
-vim.keymap.set("n", "p", '"+p')
-vim.keymap.set("n", "P", '"+P')
-vim.keymap.set("x", "p", '"+p')
-vim.keymap.set("x", "P", '"+P')
-vim.keymap.set("n", "d", '"+d')
-vim.keymap.set("n", "dd", '"+dd')
-vim.keymap.set("n", "D", '"+D')
-vim.keymap.set("x", "d", '"+d')
-vim.keymap.set("x", "D", '"+D')
+map("n", "y", '"+y')
+map("n", "yy", '"+yy')
+map("n", "Y", '"+Y')
+map("x", "y", '"+y')
+map("x", "Y", '"+Y')
+map("n", "p", '"+p')
+map("n", "P", '"+P')
+map("x", "p", '"+p')
+map("x", "P", '"+P')
+map("n", "d", '"+d')
+map("n", "dd", '"+dd')
+map("n", "D", '"+D')
+map("x", "d", '"+d')
+map("x", "D", '"+D')
 
 -- Navigation
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
+map("n", "<C-d>", "<C-d>zz")
+map("n", "<C-u>", "<C-u>zz")
 
 -- Toggleterm navigate
 function _G.set_terminal_keymaps()
 	local opts = { buffer = 0 }
-	vim.keymap.set("t", "<C-h>", [[<Cmd>wincmd h<CR>]], opts)
-	vim.keymap.set("t", "<C-j>", [[<Cmd>wincmd j<CR>]], opts)
-	vim.keymap.set("t", "<C-k>", [[<Cmd>wincmd k<CR>]], opts)
-	vim.keymap.set("t", "<C-l>", [[<Cmd>wincmd l<CR>]], opts)
-	vim.keymap.set("t", "<C-w>", [[<C-\><C-n><C-w>]], opts)
+	map("t", "<C-h>", [[<Cmd>wincmd h<CR>]], opts)
+	map("t", "<C-j>", [[<Cmd>wincmd j<CR>]], opts)
+	map("t", "<C-k>", [[<Cmd>wincmd k<CR>]], opts)
+	map("t", "<C-l>", [[<Cmd>wincmd l<CR>]], opts)
+	map("t", "<C-w>", [[<C-\><C-n><C-w>]], opts)
 end
 
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
 vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
 
 -- Standard operations
-vim.keymap.set("n", "<leader>w", "<cmd>w<cr>", { desc = "Save" })
-vim.keymap.set("n", "<leader>q", "<cmd>confirm q<cr>", { desc = "Quit" })
-vim.keymap.set("v", "<Tab>", ">gv", { desc = "Indent line" })
-vim.keymap.set("v", "<S-Tab>", "<gv", { desc = "Unindent line" })
+map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save" })
+map("n", "<leader>q", "<cmd>confirm q<cr>", { desc = "Quit" })
+map("v", "<Tab>", ">gv", { desc = "Indent line" })
+map("v", "<S-Tab>", "<gv", { desc = "Unindent line" })
 
-vim.keymap.set("n", "<leader>c", function()
+map("n", "<leader>c", function()
 	utils.close()
 end, { desc = "Close Buffer" })
 
 -- Spectre
-vim.keymap.set("n", "<leader>S", '<cmd>lua require("spectre").toggle()<CR>', {
+map("n", "<leader>S", '<cmd>lua require("spectre").toggle()<CR>', {
 	desc = "Toggle Spectre",
 })
-vim.keymap.set("n", "<leader>sw", '<cmd>lua require("spectre").open_visual({select_word=true})<CR>', {
+map("n", "<leader>sw", '<cmd>lua require("spectre").open_visual({select_word=true})<CR>', {
 	desc = "Search current word",
 })
-vim.keymap.set("v", "<leader>sw", '<esc><cmd>lua require("spectre").open_visual()<CR>', {
+map("v", "<leader>sw", '<esc><cmd>lua require("spectre").open_visual()<CR>', {
 	desc = "Search current word",
 })
-vim.keymap.set("n", "<leader>sf", '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>', {
+map("n", "<leader>sf", '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>', {
 	desc = "Search on current file",
 })
